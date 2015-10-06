@@ -59,7 +59,7 @@ public class Parser {
 		});
 		return positiveInteger().bind(new Func1<Integer, Maybe<Integer>>() {
 			public Maybe<Integer> func(Integer i) {
-				return Maybe.<Integer>Just((minus.isRight()) ? -i : i, "parsed an integer");
+				return Maybe.<Integer>Just((minus.isJust()) ? -i : i, "parsed an integer");
 			}
 		});
 	}
@@ -110,7 +110,7 @@ public class Parser {
 	protected <Ta> Maybe<Ta> lookahead(final Func0<Maybe<Ta>> pred) {
 		int oldCharIndex = charIndex;
 		Maybe<Ta> a = pred.func();
-		if (a.isRight()) {
+		if (a.isJust()) {
 			return a;
 		} else {
 			charIndex = oldCharIndex;
@@ -136,7 +136,7 @@ public class Parser {
 		Maybe<Character> c;
 		for(;;) {
 			c = consumeChar(pred);
-			if (c.isRight()) {
+			if (c.isJust()) {
 				sb.append(c.just());
 				continue;
 			} else {
@@ -155,7 +155,7 @@ public class Parser {
 		Maybe<Ta> c;
 		for(;;) {
 			c = pred.func();
-			if (c.isRight()) {
+			if (c.isJust()) {
 				sb.add(c.just());
 				continue;
 			} else {

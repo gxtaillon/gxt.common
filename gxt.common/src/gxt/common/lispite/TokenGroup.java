@@ -3,9 +3,10 @@ package gxt.common.lispite;
 public class TokenGroup {
 	String name;
 	TokenGroup[] group;
-	
-	private TokenGroup() { }
-	
+
+	private TokenGroup() {
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -20,14 +21,14 @@ public class TokenGroup {
 		r.group = new TokenGroup[0];
 		return r;
 	}
-	
+
 	public static TokenGroup Group(String name, TokenGroup[] group) {
 		TokenGroup r = new TokenGroup();
 		r.name = name;
 		r.group = group;
 		return r;
 	}
-	
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("(");

@@ -1,6 +1,6 @@
 package gxt.common;
 
-public class Tup1 <Ta> {
+public class Tup1<Ta> {
 	Ta a;
 
 	public Ta getA() {
@@ -15,6 +15,5 @@ public class Tup1 <Ta> {
 		super();
 		this.a = a;
 	}
-	
-	
+
 }

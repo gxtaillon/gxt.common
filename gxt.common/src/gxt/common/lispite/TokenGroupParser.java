@@ -79,11 +79,11 @@ public class TokenGroupParser extends Parser {
 															"got group");
 												}
 											}
-										});
+										}, "expected closing parenthesis of a token group");
 							}
 						});
 			}
-		});
+		}, "expected opening parenthesis of a token group");
 	}
 
 	protected Maybe<TokenGroup> literal() {
@@ -101,10 +101,10 @@ public class TokenGroupParser extends Parser {
 														TokenGroup.Single(s),
 														"got literal");
 											}
-										});
+										}, "expected closing bracket of a literal");
 							}
 						});
 			}
-		});
+		}, "expected opening brackets of a literal");
 	}
 }

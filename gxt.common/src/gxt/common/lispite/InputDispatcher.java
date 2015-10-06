@@ -28,7 +28,7 @@ public class InputDispatcher {
 											CommandFactory fac) {
 										return fac.make(group);
 									}
-								});
+								}, "command `" + group.name + "` not found");
 					}
 				});
 	}

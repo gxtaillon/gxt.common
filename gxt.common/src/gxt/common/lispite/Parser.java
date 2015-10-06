@@ -81,11 +81,11 @@ public class Parser {
 																+ "." + f),
 														"parsed an integer");
 											}
-										});
+										}, "expected the fractionnal part of a double");
 							}
-						});
+						}, "expected `.` to split the integral and fractionnal part of a double");
 			}
-		});
+		}, "expected the integral part of a double");
 	}
 
 	protected Maybe<Character> character(final char c) {
@@ -110,10 +110,10 @@ public class Parser {
 							return Maybe.<String> Just(s, "parsed string");
 						} else {
 							return Maybe
-									.<String> Nothing("expected string not found");
+									.<String> Nothing("expected string `" + s + "` not found");
 						}
 					}
-				});
+				}, "expected string `" + s + "` but end of input reached");
 	}
 
 	protected <Ta> Maybe<Ta> lookahead(final Func0<Maybe<Ta>> pred) {

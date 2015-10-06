@@ -1,7 +1,9 @@
 package gxt.common;
 
+import java.io.Serializable;
 
-public class Maybe <R> implements Functor<R>, MaybeBase, Monad<R, MaybeBase>, Why {
+
+public class Maybe <R> implements Functor<R>, MaybeBase, Monad<R, MaybeBase>, Why, Serializable {
 	protected R just;
 	protected String why;
 	protected Boolean isJust;

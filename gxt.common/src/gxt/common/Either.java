@@ -1,7 +1,8 @@
 package gxt.common;
 
+import java.io.Serializable;
 
-public class Either <L,R> implements Functor<R>, EitherBase, Monad<R, EitherBase>, Why {
+public class Either <L,R> implements Functor<R>, EitherBase, Monad<R, EitherBase>, Why, Serializable {
 	protected L left;
 	protected R right;
 	protected String why;

@@ -15,7 +15,7 @@ public class Maybe <R> implements Functor<R>, MaybeBase, Monad<R, MaybeBase>, Wh
 		return just;
 	}
 	
-	public Boolean isRight() {
+	public Boolean isJust() {
 		return isJust;
 	}
 	
@@ -23,7 +23,7 @@ public class Maybe <R> implements Functor<R>, MaybeBase, Monad<R, MaybeBase>, Wh
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		if (isRight()) {
+		if (isJust()) {
 			sb.append("Just (");
 			sb.append(String.valueOf(just()));
 			sb.append(")");
@@ -52,7 +52,7 @@ public class Maybe <R> implements Functor<R>, MaybeBase, Monad<R, MaybeBase>, Wh
 
 	@Override
 	public <Tb> Functor<Tb> fmap(Func1<R, Tb> f) {
-		if (isRight()) {
+		if (isJust()) {
 			return Just(f.func(just()), why());
 		} else {
 			return Nothing(why());
@@ -67,7 +67,7 @@ public class Maybe <R> implements Functor<R>, MaybeBase, Monad<R, MaybeBase>, Wh
 	@SuppressWarnings("unchecked")
 	@Override
 	public <Tb, Tmb extends Monad<Tb, MaybeBase>> Tmb bind(Func1<R, Tmb> f) {
-		if (isRight()) {
+		if (isJust()) {
 			return f.func(just());
 		} else {
 			return (Tmb) Maybe.<Tb>Nothing(why());

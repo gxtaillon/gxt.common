@@ -3,23 +3,22 @@ package gxt.common.lispite;
 import gxt.common.Func0;
 import gxt.common.Func1;
 import gxt.common.Maybe;
-import gxt.common.proxy.ArrayListProxy;
+import gxt.common.extension.ArrayListExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Parser {
 
-	protected ArrayListProxy<Character> chars;
+	protected ArrayList<Character> chars;
 	protected int charIndex;
 
 	protected Parser(String input) {
 		super();
-		ArrayList<Character> cs = new ArrayList<Character>(input.length());
+		chars = new ArrayList<Character>(input.length());
 		for (char c : input.toCharArray()) {
-			cs.add(c);
+			chars.add(c);
 		}
-		chars = ArrayListProxy.<Character> Array(cs);
 		charIndex = 0;
 	}
 
@@ -98,7 +97,7 @@ public class Parser {
 
 	protected Maybe<String> string(final String s) {
 		final int len = s.length();
-		return chars.subList(charIndex, charIndex + len).bind(
+		return ArrayListExtension.subList(chars, charIndex, charIndex + len).bind(
 				new Func1<List<Character>, Maybe<String>>() {
 					public Maybe<String> func(List<Character> cs) {
 						StringBuilder sb = new StringBuilder(chars.size());
@@ -128,7 +127,7 @@ public class Parser {
 	}
 
 	protected Maybe<Character> consumeChar(final Func1<Character, Boolean> pred) {
-		return chars.get(charIndex).bind(
+		return ArrayListExtension.get(chars, charIndex).bind(
 				new Func1<Character, Maybe<Character>>() {
 					public Maybe<Character> func(Character c) {
 						if (pred.func(c)) {

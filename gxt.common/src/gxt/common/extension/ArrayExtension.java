@@ -1,4 +1,4 @@
-package gxt.common.proxy;
+package gxt.common.extension;
 
 import java.util.Arrays;
 

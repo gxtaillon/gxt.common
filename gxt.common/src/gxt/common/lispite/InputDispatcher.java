@@ -2,16 +2,15 @@ package gxt.common.lispite;
 
 import gxt.common.Func1;
 import gxt.common.Maybe;
-import gxt.common.proxy.HashMapProxy;
+import gxt.common.extension.HashMapExtension;
 
 import java.util.HashMap;
 
 public class InputDispatcher {
-	HashMapProxy<String, CommandFactory> facs;
+	HashMap<String, CommandFactory> facs;
 
 	public InputDispatcher() {
-		facs = HashMapProxy
-				.<String, CommandFactory> Map(new HashMap<String, CommandFactory>());
+		facs = new HashMap<String, CommandFactory>();
 	}
 
 	public void addFactory(String name, CommandFactory cmd) {
@@ -22,7 +21,7 @@ public class InputDispatcher {
 		return TokenGroupParser.parseGroup(input).bind(
 				new Func1<TokenGroup, Maybe<Command>>() {
 					public Maybe<Command> func(final TokenGroup group) {
-						return facs.get(group.name).bind(
+						return HashMapExtension.get(facs, group.name).bind(
 								new Func1<CommandFactory, Maybe<Command>>() {
 									public Maybe<Command> func(
 											CommandFactory fac) {

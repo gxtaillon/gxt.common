@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import gxt.common.Func0;
 import gxt.common.Func1;
 import gxt.common.Maybe;
-import gxt.common.proxy.ArrayExtension;
+import gxt.common.extension.ArrayExtension;
 
 public class TokenGroupParser extends Parser {
 	TokenGroup group;

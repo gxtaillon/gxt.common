@@ -1,5 +1,5 @@
 package gxt.common;
 
-public class ChallengeBase implements MonadBase<ChallengeBase>, MonadWhyBase<ChallengeBase> {
+public interface ChallengeBase extends MonadBase<ChallengeBase>, MonadWhyBase<ChallengeBase> {
 
 }

@@ -18,6 +18,7 @@ public class Workbench {
 		Scanner sc = new Scanner(System.in);
 		try {
 			do {
+				System.out.print(" >");
 				String line = sc.nextLine();
 				c = id.dispatch(line);
 				System.out.println(c.toString());

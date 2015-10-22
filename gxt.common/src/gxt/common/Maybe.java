@@ -54,6 +54,14 @@ public class Maybe<R> implements Functor<R>, MaybeBase, Monad<R, MaybeBase>,
 		return ew;
 	}
 
+	public static <Ta> Maybe<Ta> Challenge(Challenge challenge, Func1<String, Maybe<Ta>> f) {
+		if (challenge.isSuccess()) {
+			return f.func(challenge.why());
+		} else {
+			return Maybe.<Ta>Nothing(challenge.why());
+		}
+	}
+
 	@Override
 	public <Tb> Functor<Tb> fmap(Func1<R, Tb> f) {
 		if (isJust()) {

@@ -2,18 +2,18 @@ package gxt.common.fp;
 
 import gxt.common.Func1;
 
-public class EitherMonad <L,R> implements Monad<R, EitherMonad> {
+public class EitherMonad {
 
-	@Override
-	public Monad<R, EitherMonad> unit(R a) {
-		//return Either.<L,R>Right(a, "created Right");
-		return null;
+	public <L,R> Either<L,R> unit(R r) {
+		return Either.Right(r, "unit'd");
 	}
 
-	@Override
-	public <B> Monad<R, EitherMonad> bind(B b, Func1<B, EitherMonad> f) {
-		// TODO Auto-generated method stub
-		return null;
+	public <L,R,S> Either<L,S> bind(Either<L,R> m, Func1<R,Either<L, S>> f) {
+		if (m.isRight()) {
+			return f.func(m.right());
+		} else {
+			return Either.Left(m.left(), m.why());
+		}
 	}
 	
 }

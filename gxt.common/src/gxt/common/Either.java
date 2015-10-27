@@ -2,8 +2,8 @@ package gxt.common;
 
 import java.io.Serializable;
 
-public class Either<L, R> implements Functor<R>, EitherBase,
-		Monad<R, EitherBase>, MonadWhy<R, EitherBase>, Serializable {
+public class Either<L, R> implements Functor<R>, EitherBase<L>,
+		Monad<R, EitherBase<L>>, MonadWhy<R, EitherBase<L>>, Serializable {
 
 	private static final long serialVersionUID = -3328798946605402708L;
 	protected L left;
@@ -79,7 +79,7 @@ public class Either<L, R> implements Functor<R>, EitherBase,
 	}
 
 	@Override
-	public <Tb, Tmb extends Monad<Tb, EitherBase>> Tmb bind(Func1<R, Tmb> f) {
+	public <Tb, Tmb extends Monad<Tb, EitherBase<L>>> Tmb bind(Func1<R, Tmb> f) {
 		return bind(f, why());
 	}
 
@@ -88,14 +88,23 @@ public class Either<L, R> implements Functor<R>, EitherBase,
 		return why;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <Tb, Tmb extends Monad<Tb, EitherBase>> Tmb bind(Func1<R, Tmb> f,
-			String newWhy) {
+	public <Tb, Tmb extends Monad<Tb, EitherBase<L>>> Tmb bind(Func1<R, Tmb> f,
+			final String newWhy) {
+		return caseOf(f, new Func1<L, Tmb>() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public Tmb func(L a) {
+				return (Tmb) Either.Left(a, newWhy);
+			}
+		});
+	}
+	
+	public <T> T caseOf(Func1<R, T> f, Func1<L, T> g) {
 		if (isRight()) {
 			return f.func(right());
 		} else {
-			return (Tmb) Either.<L, Tb> Left(left(), newWhy);
+			return g.func(left());
 		}
 	}
 }

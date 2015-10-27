@@ -1,6 +1,6 @@
 package gxt.common;
 
-public interface EitherBase extends MonadBase<EitherBase>,
-		MonadWhyBase<EitherBase> {
+public interface EitherBase <L> extends MonadBase<EitherBase<L>>,
+		MonadWhyBase<EitherBase<L>> {
 
 }

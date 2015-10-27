@@ -1,16 +1,18 @@
 package gxt.common.fp;
 
+import gxt.common.Func1;
+import gxt.common.Tup0;
 import gxt.common.Why;
 
 import java.io.Serializable;
 
-public class Either<L, R> implements Why, Serializable {
+public final class Either<L, R> implements Why, Serializable {
 
 	private static final long serialVersionUID = -3328798946605402708L;
-	protected L left;
-	protected R right;
-	protected String why;
-	protected Boolean isRight;
+	private L left;
+	private R right;
+	private String why;
+	private Boolean isRight;
 
 	public L left() {
 		if (isRight) {
@@ -68,5 +70,33 @@ public class Either<L, R> implements Why, Serializable {
 	@Override
 	public String why() {
 		return why;
+	}
+	
+	public static <L, R, T> CaseOf<L, R, Tup0, Tup0, T> newCaseOf() {
+		return new CaseOf<L, R, Tup0, Tup0, T>();
+	}
+	
+    public <T> T caseOf(CaseOf<L, R, Func1<L, T>, Func1<R, T>, T> caseOf) {
+    	if (isRight()) {
+    		return caseOf.matchRight.func(this.right());
+    	} else {
+    		return caseOf.matchLeft.func(this.left());
+    	}
+    }
+	
+	public static final class CaseOf<L, R, PL, PR, T> {
+		private Func1<R, T> matchRight; 
+		private Func1<L, T> matchLeft;
+		private CaseOf() {}
+		@SuppressWarnings("unchecked")
+		public CaseOf<L, R, PL, Func1<R, T>, T> caseRight(Func1<R, T> f) {
+			matchRight = f;
+			return (CaseOf<L, R, PL, Func1<R, T>, T>)this;
+		}
+		@SuppressWarnings("unchecked")
+		public CaseOf<L, R, Func1<L, T>, PR, T> caseLeft(Func1<L, T> f) {
+			matchLeft = f;
+			return (CaseOf<L, R, Func1<L, T>, PR, T>)this;
+		}
 	}
 }

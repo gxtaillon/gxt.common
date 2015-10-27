@@ -1,5 +1,8 @@
 package gxt.common;
 
+/**
+ * The Void, Nil, Null, E or whatever you want to call it type.
+ */
 public class Tup0 {
 	protected Tup0() {
 	}

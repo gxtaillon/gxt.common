@@ -2,15 +2,14 @@ package gxt.common;
 
 import java.io.Serializable;
 
-public class Maybe<R> implements Functor<R>, MaybeBase, Monad<R, MaybeBase>,
-		MonadWhy<R, MaybeBase>, Serializable {
+public class Maybe<A> implements Why, Serializable {
 
 	private static final long serialVersionUID = -2148548805452617600L;
-	protected R just;
+	protected A just;
 	protected String why;
 	protected Boolean isJust;
 
-	public R just() {
+	public A just() {
 		if (!isJust) {
 			throw new RuntimeException(
 					"Invalid operation: called just on a nothing maybe.");
@@ -63,7 +62,11 @@ public class Maybe<R> implements Functor<R>, MaybeBase, Monad<R, MaybeBase>,
 	}
 
 	@Override
-	public <Tb> Functor<Tb> fmap(Func1<R, Tb> f) {
+	public String why() {
+		return why;
+	}
+	
+	public <B> Maybe<B> fmap(Func1<A, B> f) {
 		if (isJust()) {
 			return Just(f.func(just()), why());
 		} else {
@@ -71,29 +74,29 @@ public class Maybe<R> implements Functor<R>, MaybeBase, Monad<R, MaybeBase>,
 		}
 	}
 
-	@Override
-	public Maybe<R> unit(R u) {
-		return Just(u, "returned");
+	public <B> Maybe<B> unit(B b) {
+		return Just(b, "unit'd");
 	}
 
-	@Override
-	public <Tb, Tmb extends Monad<Tb, MaybeBase>> Tmb bind(Func1<R, Tmb> f) {
+	public <B> Maybe<B> bind(Func1<A, Maybe<B>> f) {
 		return bind(f, why());
 	}
-
-	@Override
-	public String why() {
-		return why;
+	
+	public <B> Maybe<B> bind(Func1<A, Maybe<B>> f,
+			final String newWhy) {
+		return caseOf(f, new Func1<String, Maybe<B>>() {
+			@Override
+			public Maybe<B> func(String why) {
+				return Nothing(newWhy);
+			}
+		});
 	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public <Tb, Tmb extends Monad<Tb, MaybeBase>> Tmb bind(Func1<R, Tmb> f,
-			String newWhy) {
+	
+	public <T> T caseOf(Func1<A, T> f, Func1<String, T> g) {
 		if (isJust()) {
 			return f.func(just());
 		} else {
-			return (Tmb) Maybe.<Tb> Nothing(newWhy);
+			return g.func(why());
 		}
 	}
 }

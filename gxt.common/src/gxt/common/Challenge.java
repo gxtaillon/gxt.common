@@ -2,8 +2,7 @@ package gxt.common;
 
 import java.io.Serializable;
 
-public class Challenge implements Monad<String, ChallengeBase>, 
-		MonadWhy<String, ChallengeBase>, Serializable {
+public class Challenge implements Why, Serializable {
 	
 	private static final long serialVersionUID = -5527645162705193712L;
 	protected String why;
@@ -54,26 +53,37 @@ public class Challenge implements Monad<String, ChallengeBase>,
 		return why;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public <Tb, Tmb extends Monad<Tb, ChallengeBase>> Tmb bind(
-			Func1<String, Tmb> f, String newWhy) {
-		if (success) {
-			return f.func(why);
+	public Challenge fmap(Func1<String, String> f) {
+		if (isSuccess()) {
+			return Success(f.func(why()));
 		} else {
-			return (Tmb) Failure(newWhy);
+			return Failure(why());
 		}
 	}
 
-	@Override
-	public Monad<String, ChallengeBase> unit(String a) {
-		return Success(a);
+	public Challenge unit(String s) {
+		return Challenge.Success(s);
 	}
 
-	@Override
-	public <Tb, Tmb extends Monad<Tb, ChallengeBase>> Tmb bind(
-			Func1<String, Tmb> f) {
+	public Challenge bind(Func1<String, Challenge> f) {
 		return bind(f, why());
 	}
-
+	
+	public Challenge bind(Func1<String, Challenge> f,
+			final String newWhy) {
+		return caseOf(f, new Func1<String, Challenge>() {
+			@Override
+			public Challenge func(String a) {
+				return Challenge.Failure(newWhy);
+			}
+		});
+	}
+	
+	public <T> T caseOf(Func1<String, T> f, Func1<String, T> g) {
+		if (isSuccess()) {
+			return f.func(why());
+		} else {
+			return g.func(why());
+		}
+	}
 }

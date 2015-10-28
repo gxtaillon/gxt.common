@@ -1,4 +1,4 @@
-package gxt.common.wip;
+package gxt.common.fp.wip;
 
 import gxt.common.Func1;
 import gxt.common.fp.Either;
